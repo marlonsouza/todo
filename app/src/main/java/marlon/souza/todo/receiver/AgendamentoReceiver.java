@@ -9,7 +9,6 @@ import android.content.Intent;
 
 import marlon.souza.todo.R;
 import marlon.souza.todo.model.Agendamento;
-import marlon.souza.todo.notification.AgendamentoDeleteReceiver;
 import marlon.souza.todo.wizard.AgendamentoWizard;
 
 /**

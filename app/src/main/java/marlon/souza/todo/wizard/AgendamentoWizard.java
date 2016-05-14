@@ -23,6 +23,7 @@ import marlon.souza.todo.R;
 import marlon.souza.todo.alarm.AlarmHelper;
 import marlon.souza.todo.db.daos.AgendamentoDAO;
 import marlon.souza.todo.model.Agendamento;
+import marlon.souza.todo.receiver.RefreshListReceiver;
 
 /**
  * Created by marlonsouza on 12/05/16.
@@ -116,17 +117,17 @@ public class AgendamentoWizard {
           @Override
           public void onClick(View v) {
             entity = Agendamento.Builder.create()
-                .id(instance.id)
                 .dataHoraMilliseconds(instance.agendamento.toDateTime().getMillis())
                 .dataHora(instance.agendamento)
                 .titulo(tituloEditText.getText().toString())
                 .descricao(descricaoEditText.getText().toString())
                 .build();
 
-            Boolean inserido = AgendamentoDAO.of(activity).insert(entity);
+            Agendamento persisted = AgendamentoDAO.of(activity).insert(entity);
 
-            if(inserido){
-                AlarmHelper.agendarAlarmPara(activity, agendamento.toDateTime().getMillis(), entity);
+            if(persisted!=null){
+                AlarmHelper.agendarAlarmPara(activity, agendamento.toDateTime().getMillis(), persisted);
+                RefreshListReceiver.refreshMe(activity);
             }
 
             dialog.dismiss();

@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <receiver android:name=".notification.AgendamentoDeleteReceiver">
+        <receiver android:name=".receiver.AgendamentoDeleteReceiver">
             <intent-filter>
                 <action android:name="marlon.souza.todo.DELETE_AGENDAMENTO" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -30,6 +30,12 @@
         <receiver android:name=".receiver.AgendamentoReceiver">
             <intent-filter>
                 <action android:name="marlon.souza.todo.ALARM_AGENDADO" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.RefreshListReceiver">
+            <intent-filter>
+                <action android:name="marlon.souza.todo.REFRESH_LIST" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

@@ -14,6 +14,8 @@ import marlon.souza.todo.wizard.AgendamentoWizard;
  */
 public class AlarmHelper {
 
+  private static Integer idAlarm = 0;
+
   public static void agendarAlarm(Context context){
     Intent intent = new Intent(context, AgendamentoReceiver.class);
     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
@@ -29,7 +31,7 @@ public class AlarmHelper {
 
     intent.putExtra(AgendamentoWizard.KEY_AGENDAMENTO, agendamento);
 
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, agendamento.getId(), intent, PendingIntent.FLAG_ONE_SHOT);
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ++idAlarm, intent, PendingIntent.FLAG_ONE_SHOT);
 
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     alarmManager.set(AlarmManager.RTC_WAKEUP, to, pendingIntent);

@@ -26,12 +26,12 @@ public class SQLiteService {
     return new SQLiteService(context);
   }
 
-  public Boolean insert(String table, ContentValues values){
+  public Long insert(String table, ContentValues values){
     SQLiteDatabase sqLiteDatabase = this.helper.getWritableDatabase();
 
     long result = sqLiteDatabase.insert(table, null, values);
 
-    return result != -1;
+    return result;
   }
 
   public Cursor list(String select){
@@ -45,7 +45,7 @@ public class SQLiteService {
 
     String where[] = new String[]{id};
 
-    int result = sqLiteDatabase.delete(table, "_id", where);
+    int result = sqLiteDatabase.delete(table, "_id = ?", where);
 
     return result != -1;
   }

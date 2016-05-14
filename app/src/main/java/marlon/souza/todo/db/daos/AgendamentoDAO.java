@@ -33,8 +33,17 @@ public class AgendamentoDAO {
     return new AgendamentoDAO(context);
   }
 
-  public Boolean insert(Agendamento agendamento){
-    return this.service.insert(TABLE, toContentValues(agendamento));
+  public Agendamento insert(Agendamento agendamento){
+    long id = this.service.insert(TABLE, toContentValues(agendamento));
+
+    if(id==-1){
+      return null;
+    }
+
+    Agendamento persisted = Agendamento.Builder.from(agendamento).id(id).build();
+
+    return persisted;
+
   }
 
   public Boolean delete(Agendamento agendamento){
@@ -44,7 +53,6 @@ public class AgendamentoDAO {
   private ContentValues toContentValues(Agendamento agendamento){
     ContentValues contentValues = new ContentValues();
 
-    contentValues.put("_id", agendamento.getId());
     contentValues.put("data_hora",agendamento.getDataHoraMilliseconds());
     contentValues.put("descricao",agendamento.getDescricao());
     contentValues.put("titulo", agendamento.getTitulo());
@@ -52,7 +60,7 @@ public class AgendamentoDAO {
     return contentValues;
   }
 
-  public List<Agendamento> list(){
+  public List<Agendamento> listAll(){
     StringBuilder sqlBuilder = new StringBuilder();
 
     sqlBuilder
@@ -72,7 +80,7 @@ public class AgendamentoDAO {
       int column = 0;
       Agendamento.Builder agendamentoBuilder = Agendamento.Builder.create();
 
-      agendamentoBuilder.id(cursorAgendamentos.getInt(column++));
+      agendamentoBuilder.id(cursorAgendamentos.getLong(column++));
       agendamentoBuilder.titulo(cursorAgendamentos.getString(column++));
       agendamentoBuilder.descricao(cursorAgendamentos.getString(column++));
 

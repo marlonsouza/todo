@@ -14,7 +14,7 @@ public class Agendamento implements Serializable {
   private Long dataHoraMilliseconds;
   private String titulo;
   private String descricao;
-  private Integer id;
+  private Long id;
   private LocalDateTime dataHora;
 
   public Long getDataHoraMilliseconds() {
@@ -29,7 +29,7 @@ public class Agendamento implements Serializable {
     return descricao;
   }
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
@@ -46,6 +46,12 @@ public class Agendamento implements Serializable {
 
     public static Builder create(){
       return new Builder(new Agendamento());
+    }
+
+    public static Builder from(Agendamento agendamento){
+      Preconditions.checkNotNull(agendamento);
+
+      return new Builder(agendamento);
     }
 
     public Builder dataHoraMilliseconds(Long dataHoraMilliseconds){
@@ -72,7 +78,7 @@ public class Agendamento implements Serializable {
       return this;
     }
 
-    public Builder id(Integer id){
+    public Builder id(Long id){
       Preconditions.checkNotNull(id);
       entity.id = id;
       return this;

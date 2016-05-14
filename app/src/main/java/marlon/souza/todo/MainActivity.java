@@ -7,17 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
-import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
-import org.joda.time.LocalDateTime;
-
 import java.util.List;
 
 import marlon.souza.todo.db.daos.AgendamentoDAO;
 import marlon.souza.todo.model.Agendamento;
+import marlon.souza.todo.receiver.RefreshListReceiver;
 import marlon.souza.todo.wizard.AgendamentoWizard;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
   private AgendamentoDAO agendamentoDAO;
 
   private ListView agendamentosView;
+  private ListAgendamentoAdapter listAgendamentoAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
+    RefreshListReceiver.fixeMainActivity(instance);
+    RefreshListReceiver.refreshMe(instance);
     agendamentoDAO = AgendamentoDAO.of(instance);
     agendamentosView = (ListView) findViewById(R.id.list);
-    refreshList();
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {
@@ -48,38 +44,25 @@ public class MainActivity extends AppCompatActivity {
   }
 
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    refreshList();
+
+  }
+
   public void refreshList(){
-    agendamentosView.setAdapter(new ItemAdapter(this, R.layout.agendamento, loadItens()));
+    if(this.listAgendamentoAdapter==null){
+      this.listAgendamentoAdapter = new ListAgendamentoAdapter(this, R.layout.agendamento, loadItens());
+      agendamentosView.setAdapter(this.listAgendamentoAdapter);
+    }else{
+      this.listAgendamentoAdapter.clear();
+      this.listAgendamentoAdapter.addAll(loadItens());
+    }
   }
 
   private List<Agendamento> loadItens(){
-    return ImmutableList.copyOf(agendamentoDAO.list());
-  }
-
-  private List<Agendamento> mockList(){
-
-    final List<Agendamento> agendamentosMock = Lists.newArrayList();
-
-    Stream.of(ImmutableList.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
-        .forEach(new Consumer<Integer>() {
-          @Override
-          public void accept(Integer value) {
-            agendamentosMock.add(mock(value));
-          }
-        });
-
-
-
-    return agendamentosMock;
-  }
-
-  private Agendamento mock(Integer id){
-    return Agendamento.Builder.create()
-        .dataHora(LocalDateTime.now())
-        .descricao("Agenda "+id)
-        .titulo("Titulo Agenda "+id)
-        .dataHoraMilliseconds(LocalDateTime.now().toDateTime().getMillis())
-        .id(id)
-        .build();
+    return agendamentoDAO.listAll();
   }
 }
