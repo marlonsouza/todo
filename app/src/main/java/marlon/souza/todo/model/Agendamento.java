@@ -2,6 +2,8 @@ package marlon.souza.todo.model;
 
 import com.google.common.base.Preconditions;
 
+import org.joda.time.LocalDateTime;
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,7 @@ public class Agendamento implements Serializable {
   private String titulo;
   private String descricao;
   private Integer id;
+  private LocalDateTime dataHora;
 
   public Long getDataHoraMilliseconds() {
     return dataHoraMilliseconds;
@@ -28,6 +31,10 @@ public class Agendamento implements Serializable {
 
   public Integer getId() {
     return id;
+  }
+
+  public LocalDateTime getDataHora() {
+    return dataHora;
   }
 
   public static class Builder{
@@ -56,6 +63,12 @@ public class Agendamento implements Serializable {
     public Builder descricao(String descricao){
       Preconditions.checkNotNull(descricao);
       entity.descricao = descricao;
+      return this;
+    }
+
+    public Builder dataHora(LocalDateTime dataHora){
+      Preconditions.checkNotNull(dataHora);
+      entity.dataHora = dataHora;
       return this;
     }
 

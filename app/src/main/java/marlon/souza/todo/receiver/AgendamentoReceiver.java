@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import marlon.souza.todo.R;
+import marlon.souza.todo.model.Agendamento;
 import marlon.souza.todo.notification.AgendamentoDeleteReceiver;
+import marlon.souza.todo.wizard.AgendamentoWizard;
 
 /**
  * Created by marlonsouza on 07/05/16.
@@ -19,20 +21,19 @@ public class AgendamentoReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    String titulo = "Titulo";
-    String tickerText = "Ticker Text";
-    String mensagem = "Mensagem";
 
     Intent intentAgendaNotification = new Intent(context, AgendamentoDeleteReceiver.class);
+
+    Agendamento agendamento = (Agendamento) intent.getExtras().getSerializable(AgendamentoWizard.KEY_AGENDAMENTO);
+
+    intentAgendaNotification.putExtra(AgendamentoWizard.KEY_AGENDAMENTO, agendamento);
 
     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ++max, intentAgendaNotification, PendingIntent.FLAG_ONE_SHOT);
 
     Notification agendamentoNotification = new Notification.Builder(context)
-        .setTicker(tickerText)
-        .setContentTitle(titulo)
-        .setSubText(titulo+" id:"+max)
+        .setContentTitle(agendamento.getTitulo())
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentText(mensagem+" id:"+max)
+        .setContentText(agendamento.getDescricao())
         .setContentIntent(pendingIntent)
         .setWhen(System.currentTimeMillis())
         .setAutoCancel(Boolean.TRUE)

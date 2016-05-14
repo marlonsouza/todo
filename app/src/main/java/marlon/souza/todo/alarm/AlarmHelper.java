@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import marlon.souza.todo.model.Agendamento;
 import marlon.souza.todo.receiver.AgendamentoReceiver;
+import marlon.souza.todo.wizard.AgendamentoWizard;
 
 /**
  * Created by marlonsouza on 07/05/16.
@@ -26,7 +27,7 @@ public class AlarmHelper {
   public static void agendarAlarmPara(Context context, Long to, Agendamento agendamento){
     Intent intent = new Intent(context, AgendamentoReceiver.class);
 
-    intent.putExtra("AGENDAMENTO", agendamento);
+    intent.putExtra(AgendamentoWizard.KEY_AGENDAMENTO, agendamento);
 
     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, agendamento.getId(), intent, PendingIntent.FLAG_ONE_SHOT);
 

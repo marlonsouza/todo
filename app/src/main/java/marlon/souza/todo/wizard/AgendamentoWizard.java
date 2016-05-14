@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -25,6 +27,12 @@ import marlon.souza.todo.model.Agendamento;
  * Created by marlonsouza on 12/05/16.
  */
 public class AgendamentoWizard {
+  private static Integer max = 0;
+
+  private EditText tituloEditText;
+  private EditText descricaoEditText;
+  private Button agendar;
+
   private Activity activity;
   private LocalDateTime agendamento;
   private Calendar calendar;
@@ -39,11 +47,11 @@ public class AgendamentoWizard {
 
   private final Integer SECOND = 0;
 
-  private static Integer max = 0;
-
   private Integer id;
 
   private final AgendamentoWizard instance = this;
+
+  public static final String KEY_AGENDAMENTO = "AGENDAMENTO";
 
   private AgendamentoWizard(Activity activity){
     this.activity = activity;
@@ -83,6 +91,8 @@ public class AgendamentoWizard {
 
         agendamento = LocalDateTime.fromCalendarFields(calendar);
 
+        newDialogCadastro().show();
+
       }
     };
   }
@@ -96,17 +106,28 @@ public class AgendamentoWizard {
     dialog.setOnShowListener(new DialogInterface.OnShowListener() {
       @Override
       public void onShow(DialogInterface d) {
-        EditText tituloEditText = (EditText) dialog.findViewById(R.id.titulo_edit_text);
-        EditText descricaoEditText = (EditText) dialog.findViewById(R.id.descricao_edit_text);
+        tituloEditText = (EditText) dialog.findViewById(R.id.titulo_edit_text);
+        descricaoEditText = (EditText) dialog.findViewById(R.id.descricao_edit_text);
+        agendar = (Button) dialog.findViewById(R.id.salvar_agendamento);
 
-        entity = Agendamento.Builder.create()
-            .id(instance.id)
-            .dataHoraMilliseconds(instance.agendamento.toDateTime().getMillis())
-            .titulo(tituloEditText.getText().toString())
-            .descricao(descricaoEditText.getText().toString())
-            .build();
 
-        AlarmHelper.agendarAlarmPara(activity, agendamento.toDateTime().getMillis(), entity);
+        agendar.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            entity = Agendamento.Builder.create()
+                .id(instance.id)
+                .dataHoraMilliseconds(instance.agendamento.toDateTime().getMillis())
+                .dataHora(instance.agendamento)
+                .titulo(tituloEditText.getText().toString())
+                .descricao(descricaoEditText.getText().toString())
+                .build();
+
+            AlarmHelper.agendarAlarmPara(activity, agendamento.toDateTime().getMillis(), entity);
+
+            dialog.dismiss();
+          }
+        });
+
       }
     });
 
