@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Created by marlonsouza on 13/05/16.
  */
@@ -12,8 +14,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   private static final String DATABASE_NAME = "ToDo";
   private static final Integer VERSAO = 1;
 
-  public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-    super(context, DATABASE_NAME, factory, VERSAO);
+  private DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    super(context, name, factory, version);
+  }
+
+  public static DatabaseHelper of(Context context){
+    Preconditions.checkNotNull(context);
+
+    return new DatabaseHelper(context, DATABASE_NAME, null, VERSAO);
   }
 
   @Override
