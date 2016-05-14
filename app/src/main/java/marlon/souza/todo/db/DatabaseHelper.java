@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   private String createTabelaAgendamento() {
     return new StringBuilder()
         .append("CREATE TABLE agendamento(")
-        .append("_id INTEGER AUTOINCREMENT PRIMARY KEY,")
+        .append("_id INTEGER PRIMARY KEY,")
         .append("titulo TEXT,")
         .append("descricao TEXT,")
         .append("data_hora INTEGER);")

@@ -26,7 +26,7 @@
         android:layout_height="wrap_content">
         <EditText
             android:singleLine="true"
-            android:hint="@string/titulo"
+            android:hint="@string/descricao"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/descricao_edit_text"
@@ -36,10 +36,26 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:id="@+id/salvar_agendamento"
+    <LinearLayout
+        android:id="@+id/actions_cadastras"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:weightSum="10">
+
+    <Button
+        android:id="@+id/cancelar_agendamento"
+        android:layout_weight="5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="@string/cancelar"/>
+    <Button
+        android:id="@+id/salvar_agendamento"
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_height="wrap_content"
         android:text="@string/ok"/>
+    </LinearLayout>
+
 
 </LinearLayout>

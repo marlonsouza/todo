@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.common.base.Preconditions;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 import java.util.Calendar;
@@ -33,7 +35,7 @@ public class AgendamentoWizard {
 
   private EditText tituloEditText;
   private EditText descricaoEditText;
-  private Button agendar;
+  private Button agendar, cancelar;
 
   private Activity activity;
   private LocalDateTime agendamento;
@@ -111,7 +113,7 @@ public class AgendamentoWizard {
         tituloEditText = (EditText) dialog.findViewById(R.id.titulo_edit_text);
         descricaoEditText = (EditText) dialog.findViewById(R.id.descricao_edit_text);
         agendar = (Button) dialog.findViewById(R.id.salvar_agendamento);
-
+        cancelar = (Button) dialog.findViewById(R.id.cancelar_agendamento);
 
         agendar.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -130,6 +132,13 @@ public class AgendamentoWizard {
                 RefreshListReceiver.refreshMe(activity);
             }
 
+            dialog.dismiss();
+          }
+        });
+
+        cancelar.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
             dialog.dismiss();
           }
         });
