@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">ToDo</string>
     <string name="action_settings">Settings</string>
+    <string name="agendar">Agendar</string>
+    <string name="ok">OK</string>
+    <string name="titulo">Título</string>
+    <string name="descricao">Descrição</string>
 </resources>

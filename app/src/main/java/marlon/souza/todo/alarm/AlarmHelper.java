@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import marlon.souza.todo.model.Agendamento;
 import marlon.souza.todo.receiver.AgendamentoReceiver;
 
 /**
@@ -20,6 +21,17 @@ public class AlarmHelper {
 
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     alarmManager.set(AlarmManager.RTC_WAKEUP, dezSegundos, pendingIntent);
+  }
+
+  public static void agendarAlarmPara(Context context, Long to, Agendamento agendamento){
+    Intent intent = new Intent(context, AgendamentoReceiver.class);
+
+    intent.putExtra("AGENDAMENTO", agendamento);
+
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, agendamento.getId(), intent, PendingIntent.FLAG_ONE_SHOT);
+
+    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    alarmManager.set(AlarmManager.RTC_WAKEUP, to, pendingIntent);
   }
 
 }

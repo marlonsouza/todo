@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 
 import marlon.souza.todo.R;
-import marlon.souza.todo.notification.AgendamentoNotification;
+import marlon.souza.todo.notification.AgendamentoDeleteReceiver;
 
 /**
  * Created by marlonsouza on 07/05/16.
  */
 public class AgendamentoReceiver extends BroadcastReceiver {
+
+  private static Integer max = 0;
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -21,19 +23,24 @@ public class AgendamentoReceiver extends BroadcastReceiver {
     String tickerText = "Ticker Text";
     String mensagem = "Mensagem";
 
-    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, AgendamentoNotification.class),0);
+    Intent intentAgendaNotification = new Intent(context, AgendamentoDeleteReceiver.class);
+
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ++max, intentAgendaNotification, PendingIntent.FLAG_ONE_SHOT);
 
     Notification agendamentoNotification = new Notification.Builder(context)
         .setTicker(tickerText)
         .setContentTitle(titulo)
+        .setSubText(titulo+" id:"+max)
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentText(mensagem)
+        .setContentText(mensagem+" id:"+max)
         .setContentIntent(pendingIntent)
         .setWhen(System.currentTimeMillis())
+        .setAutoCancel(Boolean.TRUE)
         .build();
 
     NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-    nm.notify(R.string.app_name, agendamentoNotification);
+    nm.notify(max, agendamentoNotification);
+
   }
 }
