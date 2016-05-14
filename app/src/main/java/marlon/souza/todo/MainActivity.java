@@ -16,14 +16,14 @@ import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
-import marlon.souza.todo.db.SQLiteService;
+import marlon.souza.todo.db.daos.AgendamentoDAO;
 import marlon.souza.todo.model.Agendamento;
 import marlon.souza.todo.wizard.AgendamentoWizard;
 
 public class MainActivity extends AppCompatActivity {
 
   private final MainActivity instance = this;
-  private SQLiteService service;
+  private AgendamentoDAO agendamentoDAO;
 
   private ListView agendamentosView;
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    service = SQLiteService.of(instance);
+    agendamentoDAO = AgendamentoDAO.of(instance);
     agendamentosView = (ListView) findViewById(R.id.list);
     refreshList();
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private List<Agendamento> loadItens(){
-    return ImmutableList.copyOf(mockList());
+    return ImmutableList.copyOf(agendamentoDAO.list());
   }
 
   private List<Agendamento> mockList(){

@@ -21,6 +21,7 @@ import java.util.Calendar;
 
 import marlon.souza.todo.R;
 import marlon.souza.todo.alarm.AlarmHelper;
+import marlon.souza.todo.db.daos.AgendamentoDAO;
 import marlon.souza.todo.model.Agendamento;
 
 /**
@@ -122,7 +123,11 @@ public class AgendamentoWizard {
                 .descricao(descricaoEditText.getText().toString())
                 .build();
 
-            AlarmHelper.agendarAlarmPara(activity, agendamento.toDateTime().getMillis(), entity);
+            Boolean inserido = AgendamentoDAO.of(activity).insert(entity);
+
+            if(inserido){
+                AlarmHelper.agendarAlarmPara(activity, agendamento.toDateTime().getMillis(), entity);
+            }
 
             dialog.dismiss();
           }
